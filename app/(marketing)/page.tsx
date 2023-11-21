@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button'
 import { Medal } from 'lucide-react'
 
 const MarketingPage = () => {
@@ -20,6 +21,7 @@ const MarketingPage = () => {
         high rises to the home office, the way your team work is unique -
         accomplish it all with Taskify.
       </div>
+      <Button></Button>
     </div>
   )
 }

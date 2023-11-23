@@ -1,8 +1,10 @@
 'use server'
-import { db } from '@/lib/db'
+
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { z } from 'zod'
+import z from 'zod'
+
+import { db } from '@/lib/db'
 
 export type State = {
   errors?: {
@@ -12,12 +14,15 @@ export type State = {
 }
 
 const CreateBoard = z.object({
-  title: z
-    .string()
-    .min(3, { message: 'Minimum length of 3 letters is required' }),
+  title: z.string().min(3, {
+    message: 'Minimum length of 3 letters required',
+  }),
 })
 
+// server actions
 export async function create(prevState: State, formData: FormData) {
+   console.log('PREVSTATE',prevState)
+   console.log('FORMDATA', formData)
   const validatedFields = CreateBoard.safeParse({
     title: formData.get('title'),
   })
@@ -25,10 +30,9 @@ export async function create(prevState: State, formData: FormData) {
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing fields.',
+      message: 'Missing fields',
     }
   }
-
   const { title } = validatedFields.data
 
   try {
@@ -38,8 +42,11 @@ export async function create(prevState: State, formData: FormData) {
       },
     })
   } catch (error) {
-    return { message: 'Database Error' }
+    return {
+      message: 'Database error',
+    }
   }
+
   revalidatePath('/organization/org_2YTLXOCYWhdSyPcWySSsUGR8Ev2')
   redirect('/organization/org_2YTLXOCYWhdSyPcWySSsUGR8Ev2')
 }

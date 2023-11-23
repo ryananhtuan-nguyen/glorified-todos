@@ -21,8 +21,8 @@ const CreateBoard = z.object({
 
 // server actions
 export async function create(prevState: State, formData: FormData) {
-   console.log('PREVSTATE',prevState)
-   console.log('FORMDATA', formData)
+  console.log('PREVSTATE', prevState)
+  console.log('FORMDATA', formData)
   const validatedFields = CreateBoard.safeParse({
     title: formData.get('title'),
   })

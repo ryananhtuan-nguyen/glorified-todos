@@ -2,6 +2,8 @@
 import React from 'react'
 import { useFormStatus } from 'react-dom'
 
+import { Input } from '@/components/ui/input'
+
 interface FormInputProps {
   errors?: {
     title?: string[]
@@ -13,16 +15,7 @@ const FormInput = ({ errors }: FormInputProps) => {
 
   return (
     <div>
-      <input
-        type="text"
-        id="title"
-        name="title"
-        required
-        disabled={pending}
-        placeholder="Enter board title"
-        className="border-black
-  border p-1"
-      />
+      <Input type="text" id="title" name="title" required disabled={pending} />
       {errors?.title ? (
         <div>
           {errors.title?.map((error: string) => (

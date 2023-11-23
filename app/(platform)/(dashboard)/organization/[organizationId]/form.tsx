@@ -1,34 +1,16 @@
 'use client'
 
-import {  create } from '@/actions/create-board'
+import { State, create } from '@/actions/create-board'
 import { Button } from '@/components/ui/button'
 import { useFormState } from 'react-dom'
+import FormInput from './FormInput'
 
 export const Form = () => {
-  const initialState = { message: null, errors: {} }
+  const initialState = { message: null, errors: {} } as State
   const [state, dispatch] = useFormState(create, initialState)
   return (
     <form action={dispatch}>
-      <div>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          required
-          placeholder="Enter board title"
-          className="border-black
-        border p-1"
-        />
-        {state?.errors?.title ? (
-          <div>
-            {state.errors.title?.map((error: string) => (
-              <p key={error} className=" text-rose-500">
-                {error}
-              </p>
-            ))}
-          </div>
-        ) : null}
-      </div>
+      <FormInput errors={state?.errors} />
       <Button type="submit">Submit</Button>
     </form>
   )

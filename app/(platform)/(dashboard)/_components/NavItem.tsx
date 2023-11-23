@@ -4,7 +4,13 @@ import React from 'react'
 import { Activity, CreditCard, Layout, Settings } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
-import { AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import {
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+import { usePathname, useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 
 export type Organization = {
   id: string
@@ -26,6 +32,9 @@ const NavItem = ({
   onExpand,
   organization,
 }: NavItemProps) => {
+  const router = useRouter()
+  const pathname = usePathname()
+
   const routes = [
     {
       label: 'Boards',
@@ -42,7 +51,16 @@ const NavItem = ({
       icon: <Settings className="h-4 w-4 mr-2" />,
       href: `/organization/${organization.id}/settings`,
     },
+    {
+      label: 'Billing',
+      icon: <CreditCard className="h-4 w-4 mr-2" />,
+      href: `/organization/${organization.id}/billing`,
+    },
   ]
+
+  const onClick = (href: string) => {
+    router.push(href)
+  }
 
   return (
     <AccordionItem value={organization.id} className="border-none">
@@ -67,6 +85,22 @@ const NavItem = ({
           <span className="font-medium text-sm">{organization.name}</span>
         </div>
       </AccordionTrigger>
+      <AccordionContent className="pt-1 text-neutral-700 ">
+        {routes.map((route) => (
+          <Button
+            onClick={() => onClick(route.href)}
+            className={cn('w-full font-normal justify-start pl-10 mb-1', {
+              'bg-sky-500/10 text-sky-700': pathname === route.href,
+            })}
+            key={route.href}
+            size="sm"
+            variant="ghost"
+          >
+            {route.icon}
+            {route.label}
+          </Button>
+        ))}
+      </AccordionContent>
     </AccordionItem>
   )
 }

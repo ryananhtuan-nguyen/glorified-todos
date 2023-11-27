@@ -1,9 +1,11 @@
 'use client'
 
+import { defaultImages } from '@/constants/images'
 import { unsplash } from '@/lib/unsplash'
 import { cn } from '@/lib/utils'
-import { Loader2 } from 'lucide-react'
+import { Check, Loader2 } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 
@@ -17,7 +19,7 @@ const FormPicker = ({ id, errors }: FormPickerProps) => {
 
   const [images, setImages] = useState<Array<Record<string, any>>>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [seletedImageId, setSelectedImageId] = useState(null)
+  const [selectedImageId, setSelectedImageId] = useState(null)
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -35,7 +37,7 @@ const FormPicker = ({ id, errors }: FormPickerProps) => {
         }
       } catch (error) {
         console.log(error)
-        setImages([])
+        setImages(defaultImages)
       } finally {
         setIsLoading(false)
       }
@@ -69,12 +71,24 @@ const FormPicker = ({ id, errors }: FormPickerProps) => {
               setSelectedImageId(image.id)
             }}
           >
+            {selectedImageId === image.id && (
+              <div className="absolute inset-y-0 h-full w-full bg-black/30 flex items-center justify-center">
+                <Check className="h-4 w-4 text-white" />
+              </div>
+            )}
             <Image
               fill
               alt="Unsplash image"
               className="object-cover rounded-sm"
               src={image.urls.thumb}
             />
+            <Link
+              href={image.links.html}
+              target="_blank"
+              className="opacity-0 group-hover:opacity-100 absolute bottom-0 w-full text-[10px] truncate text-white hover:underline p-1 bg-black/50"
+            >
+              {image.user.name}
+            </Link>
           </div>
         ))}
       </div>

@@ -20,6 +20,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
   const [imageId, imageThumbUrl, imageFullUrl, imageLinkHTML, imageUserName] =
     image.split('|')
+
   if (
     !imageId ||
     !imageThumbUrl ||

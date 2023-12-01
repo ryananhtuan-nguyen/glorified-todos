@@ -5,7 +5,7 @@ import { Toaster } from 'sonner'
 const PlatformLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <ClerkProvider>
-      <Toaster />
+      <Toaster richColors />
       {children}
     </ClerkProvider>
   )

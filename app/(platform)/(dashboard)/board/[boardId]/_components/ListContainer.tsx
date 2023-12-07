@@ -9,6 +9,7 @@ import { ListWithCards } from '@/types'
 import ListForm from './ListForm'
 import ListItem from './ListItem'
 import { toast } from 'sonner'
+import { updateCardOrder } from '@/actions/update-card-order'
 
 interface ListContainerProps {
   data: ListWithCards[]
@@ -27,6 +28,7 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 const ListContainer = ({ data, boardId }: ListContainerProps) => {
   const [orderedData, setOrderedData] = useState(data)
 
+  //Server execute function to update List Order
   const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
     onSuccess: () => {
       toast.success('List reordered.')
@@ -36,10 +38,22 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
     },
   })
 
+  //Server execute function to update Card Order
+  const { execute: executeUpdateCardOrder } = useAction(updateCardOrder, {
+    onSuccess: () => {
+      toast.success('Card reordered.')
+    },
+    onError: (error) => {
+      toast.error(error)
+    },
+  })
+
+  //Fetching data
   useEffect(() => {
     setOrderedData(data)
   }, [data])
 
+  //handling on drag
   const onDragEnd = (result: DropResult) => {
     const { destination, source, type } = result
 
@@ -109,7 +123,11 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
 
         setOrderedData(newOrderedData)
 
-        //TODO: Trigger Server Action
+        //Trigger Server Action
+        executeUpdateCardOrder({
+          boardId,
+          items: reorderedCards,
+        })
 
         //User moves card to another list
       } else {
@@ -135,7 +153,11 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
 
         setOrderedData(newOrderedData)
 
-        //TODO: Trigger Server action
+        //Trigger Server action
+        executeUpdateCardOrder({
+          boardId,
+          items: destList.cards,
+        })
       }
     }
   }

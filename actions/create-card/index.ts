@@ -9,6 +9,7 @@ import { createSafeAction } from '@/lib/create-safe-action'
 import { CreateCard } from './schema'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
+  console.log('HELLO FROM SERVER')
   const { userId, orgId } = auth()
   if (!userId || !orgId) {
     return { error: 'Unauthorized' }

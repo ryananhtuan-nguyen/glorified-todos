@@ -82,8 +82,8 @@ const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
             ref={ref}
             placeholder="Enter a title for this card..."
           />
-          <input hidden id="listId" name="listId" value={listId} />
-          <input hidden id="boardId" name="boardId" value={boardId} />
+          <input hidden id="listId" name="listId" value={listId} readOnly />
+          <input hidden id="boardId" name="boardId" value={boardId} readOnly />
           <div className="flex items-center gap-x-1">
             <FormSubmit>Add card</FormSubmit>
             <Button onClick={disableEditing} size="sm" variant="ghost">

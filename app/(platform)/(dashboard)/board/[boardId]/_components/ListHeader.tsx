@@ -68,8 +68,14 @@ const ListHeader = ({ data, onAddCard }: ListHeaderProps) => {
     <div className="pt-2 px-2 text-sm font-semibold flex justify-between items-start gap-x-2">
       {isEditing ? (
         <form className="flex-1 px-[2px]" action={handleSubmit} ref={formRef}>
-          <input hidden id="id" name="id" value={data.id} />
-          <input hidden id="boardId" name="boardId" value={data.boardId} />
+          <input hidden id="id" name="id" value={data.id} readOnly />
+          <input
+            hidden
+            id="boardId"
+            name="boardId"
+            value={data.boardId}
+            readOnly
+          />
           <FormInput
             ref={inputRef}
             onBlur={onBlur}

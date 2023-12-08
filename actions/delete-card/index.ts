@@ -7,6 +7,8 @@ import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { DeleteCard } from './schema'
 import { InputType, ReturnType } from './types'
+import { createAuditLog } from '@/lib/create-audit-log'
+import { ACTION, ENTITY_TYPE } from '@prisma/client'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth()
@@ -28,6 +30,13 @@ const handler = async (data: InputType): Promise<ReturnType> => {
           },
         },
       },
+    })
+
+    await createAuditLog({
+      entityTitle: card.title,
+      entityId: card.id,
+      entityType: ENTITY_TYPE.CARD,
+      action: ACTION.DELETE,
     })
 
     //

@@ -5,7 +5,7 @@ import { auth } from '@clerk/nextjs'
 import { createSafeAction } from '@/lib/create-safe-action'
 import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
-import { CopyList } from './schema'
+import { CopyCard } from './schema'
 import { InputType, ReturnType } from './types'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
@@ -16,59 +16,48 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
   const { id, boardId } = data
 
-  let list
+  let card
 
   try {
-    const listToCopy = await db.list.findUnique({
+    const cardToCopy = await db.card.findUnique({
       where: {
         id,
-        boardId,
-        board: {
-          orgId,
+        list: {
+          board: {
+            orgId,
+          },
         },
-      },
-      include: {
-        cards: true,
       },
     })
 
-    if (!listToCopy) {
-      return { error: 'List not found' }
+    if (!cardToCopy) {
+      return { error: 'Card not found' }
     }
 
-    const lastList = await db.list.findFirst({
-      where: { boardId },
+    const lastCard = await db.card.findFirst({
+      where: { listId: cardToCopy.listId },
       orderBy: { order: 'desc' },
       select: { order: true },
     })
 
-    const newOrder = lastList ? lastList.order + 1 : 1
+    const newOrder = lastCard ? lastCard.order + 1 : 1
 
-    list = await db.list.create({
+    card = await db.card.create({
       data: {
-        boardId: listToCopy.boardId,
-        title: `${listToCopy.title} - Copy`,
+        title: `${cardToCopy.title} - Copy`,
+        description: cardToCopy.description,
         order: newOrder,
-        cards: {
-          createMany: {
-            data: listToCopy.cards.map((card) => ({
-              title: card.title,
-              description: card.description,
-              order: card.order,
-            })),
-          },
-        },
-      },
-      include: {
-        cards: true,
+        listId: cardToCopy.listId,
       },
     })
+
+    //
   } catch (error) {
     return { error: 'Failed to copy.' }
   }
 
   revalidatePath(`/board/${boardId}`)
-  return { data: list }
+  return { data: card }
 }
 
-export const copyList = createSafeAction(CopyList, handler)
+export const copyCard = createSafeAction(CopyCard, handler)

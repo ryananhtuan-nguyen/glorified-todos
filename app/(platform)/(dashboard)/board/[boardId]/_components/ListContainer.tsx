@@ -28,7 +28,7 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 const ListContainer = ({ data, boardId }: ListContainerProps) => {
   const [orderedData, setOrderedData] = useState(data)
 
-  //Server execute function to update List Order
+  //Server function to update List Order
   const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
     onSuccess: () => {
       toast.success('List reordered.')
@@ -38,7 +38,7 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
     },
   })
 
-  //Server execute function to update Card Order
+  //Server function to update Card Order
   const { execute: executeUpdateCardOrder } = useAction(updateCardOrder, {
     onSuccess: () => {
       toast.success('Card reordered.')

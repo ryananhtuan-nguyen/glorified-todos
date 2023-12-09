@@ -18,6 +18,20 @@ export const metadata: Metadata = {
       href: '/book.jpg',
     },
   ],
+  openGraph: {
+    title: {
+      default: siteConfig.name,
+      template: `%s | ${siteConfig.name}`,
+    },
+    description: siteConfig.description,
+    images: [
+      {
+        url: '/book.jpg',
+        href: '/book.jpg',
+      },
+    ],
+  },
+  metadataBase: new URL('https://glorified-todos.vercel.app'),
 }
 
 export default function RootLayout({

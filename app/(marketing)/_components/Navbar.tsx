@@ -13,7 +13,7 @@ const Navbar = () => {
           <Button size="sm" variant="outline" asChild>
             <Link href="/sign-in">Login</Link>
           </Button>
-          <Button size="sm" asChild>
+          <Button className="bg-orange-400" size="sm" asChild>
             <Link href="sign-up">Get Glorified Todos for free</Link>
           </Button>
         </div>

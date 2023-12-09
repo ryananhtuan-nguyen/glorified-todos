@@ -1,22 +1,24 @@
 'use client'
 
-import { X } from 'lucide-react'
 import { toast } from 'sonner'
+import { X } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { ElementRef, useRef } from 'react'
 
-import { Button } from '../ui/button'
 import {
   Popover,
   PopoverClose,
   PopoverContent,
   PopoverTrigger,
 } from '../ui/popover'
-import FormInput from './FormInput'
-import FormSubmit from './FormSubmit'
+import { Button } from '../ui/button'
 import { useAction } from '@/hooks/use-action'
 import { createBoard } from '@/actions/create-board'
+import { useProModal } from '@/hooks/use-pro-modal'
+
+import FormInput from './FormInput'
+import FormSubmit from './FormSubmit'
 import FormPicker from './FormPicker'
-import { ElementRef, useRef } from 'react'
-import { useRouter } from 'next/navigation'
 
 interface FormPopoverProps {
   children: React.ReactNode
@@ -31,8 +33,9 @@ const FormPopover = ({
   side = 'bottom',
   sideOffset = 0,
 }: FormPopoverProps) => {
-  const closeRef = useRef<ElementRef<'button'>>(null)
   const router = useRouter()
+  const proModal = useProModal()
+  const closeRef = useRef<ElementRef<'button'>>(null)
 
   const { execute, fieldErrors } = useAction(createBoard, {
     onSuccess: (data) => {
@@ -42,6 +45,7 @@ const FormPopover = ({
     },
     onError: (error) => {
       toast.error(error)
+      proModal.onOpen()
     },
   })
 

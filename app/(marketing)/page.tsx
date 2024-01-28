@@ -1,20 +1,20 @@
-import Link from 'next/link'
-import { Medal } from 'lucide-react'
-import localFont from 'next/font/local'
-import { Poppins } from 'next/font/google'
+import Link from 'next/link';
+import { Medal } from 'lucide-react';
+import localFont from 'next/font/local';
+import { Poppins } from 'next/font/google';
 
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { format } from 'date-fns'
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
 
 const headingFont = localFont({
   src: '../../public/fonts/font.woff2',
-})
+});
 
 const textFont = Poppins({
   subsets: ['latin'],
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-})
+});
 
 const MarketingPage = () => {
   return (
@@ -51,7 +51,7 @@ const MarketingPage = () => {
         <Link href="/sign-up"> Get GlorifiedTodos for free</Link>
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default MarketingPage
+export default MarketingPage;
